@@ -6,6 +6,16 @@ import MicroData from './components/MicroData'
 import withDataLayer, { dataLayerProps } from './components/withDataLayer'
 import productQuery from './queries/productQuery.gql'
 
+import Resize from 'react-resize-detector'
+
+function getClassForWidth(width) {
+  if (width < 640) {
+    return 'vtex--s'
+  }
+
+  return 'vtex--ns'
+}
+
 class ProductContextProvider extends Component {
   static propTypes = {
     params: PropTypes.object,
@@ -60,16 +70,22 @@ class ProductContextProvider extends Component {
     }
 
     return (
-      <div className="vtex-product-details-container">
-        <Fragment>
-          {!loading && <MicroData product={product} />}
-          {React.cloneElement(this.props.children, {
-            productQuery,
-            categories,
-            slug,
-          })}
-        </Fragment>
-      </div>
+      <Resize handleWidth>
+        {width => (
+          <div className={getClassForWidth(width)}>
+            <div className="vtex-product-details-container">
+              <Fragment>
+                {!loading && <MicroData product={product} />}
+                {React.cloneElement(this.props.children, {
+                  productQuery,
+                  categories,
+                  slug,
+                })}
+              </Fragment>
+            </div>
+          </div>
+        )}
+      </Resize>
     )
   }
 }

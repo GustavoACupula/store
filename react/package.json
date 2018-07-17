@@ -6,7 +6,8 @@
   "dependencies": {
     "@vtex/styleguide": "^3.0.2",
     "prop-types": "^15.5.10",
-    "react-slick": "^0.16.0"
+    "react-slick": "^0.16.0",
+    "react-resize-detector": "^3.0.1"
   },
   "devDependencies": {
     "apollo-client-preset": "^1.0.8",
