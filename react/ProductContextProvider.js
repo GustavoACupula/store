@@ -2,19 +2,10 @@ import React, { Component, Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { graphql, compose } from 'react-apollo'
 import MicroData from './components/MicroData'
+import ResizeContextProvider from './ResizeContextProvider'
 
 import withDataLayer, { dataLayerProps } from './components/withDataLayer'
 import productQuery from './queries/productQuery.gql'
-
-import Resize from 'react-resize-detector'
-
-function getClassForWidth(width) {
-  if (width < 640) {
-    return 'vtex--s'
-  }
-
-  return 'vtex--ns'
-}
 
 class ProductContextProvider extends Component {
   static propTypes = {
@@ -70,22 +61,18 @@ class ProductContextProvider extends Component {
     }
 
     return (
-      <Resize handleWidth>
-        {width => (
-          <div className={getClassForWidth(width)}>
-            <div className="vtex-product-details-container">
-              <Fragment>
-                {!loading && <MicroData product={product} />}
-                {React.cloneElement(this.props.children, {
-                  productQuery,
-                  categories,
-                  slug,
-                })}
-              </Fragment>
-            </div>
-          </div>
-        )}
-      </Resize>
+      <ResizeContextProvider>
+        <div className="vtex-product-details-container">
+          <Fragment>
+            {!loading && <MicroData product={product} />}
+            {React.cloneElement(this.props.children, {
+              productQuery,
+              categories,
+              slug,
+            })}
+          </Fragment>
+        </div>
+      </ResizeContextProvider>
     )
   }
 }
